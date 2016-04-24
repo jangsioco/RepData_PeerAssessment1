@@ -12,7 +12,7 @@ mydata <- read.csv(unzip("activity.zip"))
 
 ```r
 mygraph.data <- aggregate(steps ~ date, mydata, sum)
-hist(mygraph.data$steps)
+hist(mygraph.data$steps, main = "Total steps per day", xlab = "Steps per day")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)
@@ -41,7 +41,7 @@ median(mygraph.data$steps)
 
 ```r
 mygraph.data <- aggregate(steps ~ interval, mydata, mean)
-plot(mygraph.data$interval, mygraph.data$steps, type = "l")
+plot(mygraph.data$interval, mygraph.data$steps, type = "l", main = "Average steps per interval", xlab = "Interval", ylab = "Number of steps")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)
@@ -76,7 +76,7 @@ mydata.filled <- mydata
 mydata.filled$steps[is.na(mydata.filled$steps)] <- mygraph.data$steps[match(mydata.filled$interval, mygraph.data$interval)][which(is.na(mydata.filled$steps))]
 #4. histogram
 mygraph.data <- aggregate(steps ~ date, mydata.filled, sum)
-hist(mygraph.data$steps)
+hist(mygraph.data$steps, main = "Total steps per day", xlab = "Steps per day")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)
@@ -118,7 +118,6 @@ weekdays1 <- c('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday')
 mydata.filled$wDay <- factor((weekdays(mydata.filled$date) %in% weekdays1), levels=c(FALSE, TRUE), labels=c('weekend', 'weekday')) 
 # create panel plot
 mygraph.data <- aggregate(steps ~ interval + wDay, mydata.filled, mean)
-#plot(mygraph.data$interval, mygraph.data$steps, type = "l")
 library(ggplot2)
 ```
 
@@ -128,7 +127,7 @@ library(ggplot2)
 
 ```r
 ggplot(mygraph.data, aes(interval, steps)) + geom_line() + facet_grid(wDay ~ .) +
-    xlab("5-minute interval") + ylab("Number of steps")
+    xlab("Interval") + ylab("Number of steps") + ggtitle("Average steps per interval")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)
