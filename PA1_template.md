@@ -98,7 +98,38 @@ median(mygraph.data$steps)
 ```
 ## [1] 10766.19
 ```
+Q. Do these values differ from the estimates from the first part of the assignment? 
 
+A. Yes, but only for median value.
+
+Q. What is the impact of imputing missing data on the estimates of the total daily number of steps?
+
+A. Filling in the missing values, has caused data distribution to change, thus impacting the median value. it was 10765 from the original data set, and it has changed to 10766.19. the mean value for both sets stayed the same.
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+```r
+# make date column into an actual date field
+mydata.filled$date <- as.Date(mydata.filled$date)
+# create a weekday vector
+weekdays1 <- c('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday')
+# classify the date column between weekend or weekday
+mydata.filled$wDay <- factor((weekdays(mydata.filled$date) %in% weekdays1), levels=c(FALSE, TRUE), labels=c('weekend', 'weekday')) 
+# create panel plot
+mygraph.data <- aggregate(steps ~ interval + wDay, mydata.filled, mean)
+#plot(mygraph.data$interval, mygraph.data$steps, type = "l")
+library(ggplot2)
+```
+
+```
+## Warning: package 'ggplot2' was built under R version 3.2.3
+```
+
+```r
+ggplot(mygraph.data, aes(interval, steps)) + geom_line() + facet_grid(wDay ~ .) +
+    xlab("5-minute interval") + ylab("Number of steps")
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)
+
